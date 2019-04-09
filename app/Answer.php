@@ -6,13 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Answer extends Model
 {
-   Schema::create('answers', function (Blueprint $table) {
-   	$table->increments('id');
-   	$table->unsignedInteger('question_id');
-   	$table->unsignedInteger('user_id');
-   	$table->text('body');
-   	$table->integer('votes_count')->default(0);
-   	$table->timestamp();
+	 public function question() {
+    	return $this->belongsTo(Question::class);
+    }
+     public function user() {
+    	return $this->belongsTo(User::class);
+    }
+    public function getBodyHtmlAttribute()
+    {
+    	return \Parsedown::instance()->text($this->body);
+    }
+    public static function boot()
+    {
+    	parent::boot();
 
-   });
+    	static::created(function ($answer) {
+    	$answer->question->save();
+    	});	
+    }
 }
