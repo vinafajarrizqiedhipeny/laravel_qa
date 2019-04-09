@@ -39,8 +39,10 @@ public function getBodyHtmlAttribute()
 {
 	return \Parsedown::instance()->text($this->body);
 }
-public function answers()
+    public function answers()
 {
-	return $this->hasMany(Answer::class);
+    return $this->hasMany(Answer::class);
+    //$question->answers->count()
+    //foreach ($question->answers as $answer)
 }
 }
